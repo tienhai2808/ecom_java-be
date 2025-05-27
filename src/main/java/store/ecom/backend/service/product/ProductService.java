@@ -57,8 +57,8 @@ public class ProductService implements ProductServiceImpl {
   }
 
   @Override
-  public Product updateProduct(ProductUpdateRequest request, Long productId) {
-    return productRepository.findById(productId).map(existingProduct -> updateExistingProduct(existingProduct, request))
+  public Product updateProduct(ProductUpdateRequest request, Long id) {
+    return productRepository.findById(id).map(existingProduct -> updateExistingProduct(existingProduct, request))
         .map(productRepository::save).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm"));
   }
 

@@ -7,6 +7,7 @@ import store.ecom.backend.model.Category;
 
 @Data
 public class ProductAddRequest {
+  private Long id;
   private String name;
   private String brand;
   private BigDecimal price;

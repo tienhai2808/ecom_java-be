@@ -13,7 +13,7 @@ public interface ProductServiceImpl {
 
   void deleteProductById(Long id);
 
-  Product updateProduct(ProductUpdateRequest request, Long productId);
+  Product updateProduct(ProductUpdateRequest request, Long id);
 
   List<Product> getAllProducts();
 
