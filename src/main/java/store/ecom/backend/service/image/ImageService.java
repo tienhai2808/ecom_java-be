@@ -16,13 +16,13 @@ import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Image;
 import store.ecom.backend.model.Product;
 import store.ecom.backend.repository.image.ImageRepository;
-import store.ecom.backend.service.product.ProductServiceImpl;
+import store.ecom.backend.service.product.IProductService;
 
 @Service
 @RequiredArgsConstructor
-public class ImageService implements ImageServiceImpl {
+public class ImageService implements IImageService {
   private final ImageRepository imageRepository;
-  private final ProductServiceImpl productService;
+  private final IProductService productService;
 
   @Override
   public Image getImageById(Long id) {

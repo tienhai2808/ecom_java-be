@@ -16,7 +16,7 @@ import store.ecom.backend.request.product.ProductUpdateRequest;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService implements ProductServiceImpl {
+public class ProductService implements IProductService {
 
   private final ProductRepository productRepository;
   private final CategoryRepository categoryRepository;

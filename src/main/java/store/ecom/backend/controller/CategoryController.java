@@ -18,14 +18,13 @@ import store.ecom.backend.exceptions.AlreadyExistsException;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Category;
 import store.ecom.backend.response.ApiResponse;
-import store.ecom.backend.service.category.CategoryServiceImpl;
+import store.ecom.backend.service.category.ICategoryService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.prefix}/categories")
 public class CategoryController {
-
-  private final CategoryServiceImpl categoryService;
+  private final ICategoryService categoryService;
 
   @GetMapping("/all")
   public ResponseEntity<ApiResponse> getAllCategories() {
@@ -41,9 +40,9 @@ public class CategoryController {
   @PostMapping("/add")
   public ResponseEntity<ApiResponse> addCategory(@RequestBody Category name) {
     try {
-      Category theCategory = categoryService.addCategory(name);
+      Category newCategory = categoryService.addCategory(name);
       return ResponseEntity.status(HttpStatus.CREATED)
-          .body(new ApiResponse("Thêm danh mục thành công", theCategory));
+          .body(new ApiResponse("Thêm danh mục thành công", newCategory));
     } catch (AlreadyExistsException e) {
       return ResponseEntity.status(HttpStatus.CONFLICT)
           .body(new ApiResponse(e.getMessage(), null));
@@ -53,8 +52,8 @@ public class CategoryController {
   @GetMapping("/category/{id}/category")
   public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Long id) {
     try {
-      Category thCategory = categoryService.getCategoryById(id);
-      return ResponseEntity.ok(new ApiResponse("Lấy danh mục thành công", thCategory));
+      Category category = categoryService.getCategoryById(id);
+      return ResponseEntity.ok(new ApiResponse("Lấy danh mục thành công", category));
     } catch (ResourceNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
     }
@@ -63,8 +62,8 @@ public class CategoryController {
   @GetMapping("/category/{name}/category")
   public ResponseEntity<ApiResponse> getCategoryByName(@PathVariable String name) {
     try {
-      Category thCategory = categoryService.getCategoryByName(name);
-      return ResponseEntity.ok(new ApiResponse("Lấy danh mục thành công", thCategory));
+      Category category = categoryService.getCategoryByName(name);
+      return ResponseEntity.ok(new ApiResponse("Lấy danh mục thành công", category));
     } catch (ResourceNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
     }

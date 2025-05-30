@@ -6,7 +6,7 @@ import store.ecom.backend.model.Product;
 import store.ecom.backend.request.product.ProductAddRequest;
 import store.ecom.backend.request.product.ProductUpdateRequest;
 
-public interface ProductServiceImpl {
+public interface IProductService {
   Product addProduct(ProductAddRequest request);
 
   Product getProductById(Long id);

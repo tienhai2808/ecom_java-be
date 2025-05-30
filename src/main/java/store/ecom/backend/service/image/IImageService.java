@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import store.ecom.backend.dto.ImageDto;
 import store.ecom.backend.model.Image;
 
-public interface ImageServiceImpl {
+public interface IImageService {
   Image getImageById(Long id);
 
   void deleteImageById(Long id);

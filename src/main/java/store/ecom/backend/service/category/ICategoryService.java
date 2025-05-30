@@ -4,7 +4,7 @@ import java.util.List;
 
 import store.ecom.backend.model.Category;
 
-public interface CategoryServiceImpl {
+public interface ICategoryService {
   Category getCategoryById(Long id);
 
   Category getCategoryByName(String name);

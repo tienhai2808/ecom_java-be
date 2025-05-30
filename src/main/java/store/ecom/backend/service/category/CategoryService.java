@@ -13,7 +13,7 @@ import store.ecom.backend.repository.category.CategoryRepository;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService implements CategoryServiceImpl {
+public class CategoryService implements ICategoryService {
   private final CategoryRepository categoryRepository;
 
   @Override
