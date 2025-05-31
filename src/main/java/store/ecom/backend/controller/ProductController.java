@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -82,7 +83,7 @@ public class ProductController {
   }
 
   @GetMapping("/by/brand-and-name")
-  public ResponseEntity<ApiResponse> getProductByBrandAndName(@PathVariable String brand, @PathVariable String name) {
+  public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brand, @RequestParam String name) {
     try {
       List<Product> products = productService.getProductsByBrandAndName(brand, name);
       if (products.isEmpty()) {
@@ -112,7 +113,7 @@ public class ProductController {
     }
   }
 
-  @GetMapping("product/{name}/product")
+  @GetMapping("/{name}/products")
   public ResponseEntity<ApiResponse> getProductByName(@PathVariable String name) {
     try {
       List<Product> products = productService.getProductsByName(name);
@@ -124,6 +125,48 @@ public class ProductController {
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(new ApiResponse("Lỗi lấy sản phẩm theo tên: " + e.getMessage(), null));
+    }
+  }
+
+  @GetMapping("/by/brand")
+  public ResponseEntity<ApiResponse> findProductByBrand(@RequestParam String brand) {
+    try {
+      List<Product> products = productService.getProductsByBrand(brand);
+      if (products.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(new ApiResponse("Không tìm thấy sản phẩm với thương hiệu đã cho", null));
+      }
+      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", products));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(new ApiResponse("Lỗi lấy sản phẩm theo thương hiệu: " + e.getMessage(), null));
+    }
+  }
+
+  @GetMapping("/product/{category}/all/products")
+  public ResponseEntity<ApiResponse> findProductByCategory(@PathVariable String category) {
+    try {
+      List<Product> products = productService.getProductsByCategory(category);
+      if (products.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(new ApiResponse("Không tìm thấy sản phẩm với danh mục đã cho", null));
+      }
+      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", products));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(new ApiResponse("Lỗi lấy sản phẩm theo danh mục: " + e.getMessage(), null));
+    }
+  }
+
+  @GetMapping("/product/count/by/brand-and-name")
+  public ResponseEntity<ApiResponse> countProductsByBrandAndName(@RequestParam String brand,
+      @RequestParam String name) {
+    try {
+      var productCount = productService.countProductsByBrandAndName(brand, name);
+      return ResponseEntity.ok(new ApiResponse("Đếm sản phẩm thành công", productCount));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(new ApiResponse("Lỗi đếm sản phẩm theo thương hiệu và tên: " + e.getMessage(), null));
     }
   }
 }
