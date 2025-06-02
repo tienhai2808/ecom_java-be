@@ -25,13 +25,13 @@ import store.ecom.backend.dto.ImageDto;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Image;
 import store.ecom.backend.response.ApiResponse;
-import store.ecom.backend.service.image.IImageService;
+import store.ecom.backend.service.image.ImageService;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/images")
 public class ImageController {
-  private final IImageService imageService;
+  private final ImageService imageService;
 
   @PostMapping("/upload")
   public ResponseEntity<ApiResponse> saveImages(@RequestParam List<MultipartFile> files, @RequestParam Long productId) {

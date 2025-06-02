@@ -15,24 +15,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import store.ecom.backend.dto.ProductDto;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Product;
 import store.ecom.backend.request.product.ProductAddRequest;
 import store.ecom.backend.request.product.ProductUpdateRequest;
 import store.ecom.backend.response.ApiResponse;
-import store.ecom.backend.service.product.IProductService;
+import store.ecom.backend.service.product.ProductService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.prefix}/products")
 public class ProductController {
-  private final IProductService productService;
+  private final ProductService productService;
 
   @GetMapping("/all")
   public ResponseEntity<ApiResponse> getAllProducts() {
     try {
       List<Product> products = productService.getAllProducts();
-      return ResponseEntity.ok(new ApiResponse("Lấy dữ liệu thành công", products));
+      List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
+      return ResponseEntity.ok(new ApiResponse("Lấy dữ liệu thành công", convertedProducts));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(new ApiResponse("Lỗi lấy danh sách sản phẩm: " + e.getMessage(), null));

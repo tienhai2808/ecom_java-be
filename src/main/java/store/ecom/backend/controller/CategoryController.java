@@ -18,13 +18,13 @@ import store.ecom.backend.exceptions.AlreadyExistsException;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Category;
 import store.ecom.backend.response.ApiResponse;
-import store.ecom.backend.service.category.ICategoryService;
+import store.ecom.backend.service.category.CategoryService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.prefix}/categories")
 public class CategoryController {
-  private final ICategoryService categoryService;
+  private final CategoryService categoryService;
 
   @GetMapping("/all")
   public ResponseEntity<ApiResponse> getAllCategories() {
