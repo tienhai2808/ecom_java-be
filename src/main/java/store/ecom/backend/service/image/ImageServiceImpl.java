@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.sql.rowset.serial.SerialBlob;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,9 @@ import store.ecom.backend.service.product.ProductService;
 public class ImageServiceImpl implements ImageService {
   private final ImageRepository imageRepository;
   private final ProductService productService;
+
+  @Value("${api.prefix}")
+  private String apiPrefix;
 
   @Override
   public Image getImageById(Long id) {
@@ -48,7 +52,7 @@ public class ImageServiceImpl implements ImageService {
         image.setImage(new SerialBlob(file.getBytes()));
         image.setProduct(product);
 
-        String prefixDownloadUrl = "/restful-api/images/image/download/";
+        String prefixDownloadUrl = apiPrefix + "/images/image/download/";
         String downloadUrl = prefixDownloadUrl + image.getId();
         image.setDownloadUrl(downloadUrl);
 
@@ -58,7 +62,7 @@ public class ImageServiceImpl implements ImageService {
 
         ImageDto imageDto = new ImageDto();
         imageDto.setImageId(savedImage.getId());
-        imageDto.setImageName(savedImage.getFileName());
+        imageDto.setFileName(savedImage.getFileName());
         imageDto.setDownloadUrl(savedImage.getDownloadUrl());
 
         savedImageDtos.add(imageDto);

@@ -45,7 +45,8 @@ public class ProductController {
   public ResponseEntity<ApiResponse> getProductById(@PathVariable Long id) {
     try {
       Product product = productService.getProductById(id);
-      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", product));
+      ProductDto convertedProductDto = productService.convertToDto(product);
+      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", convertedProductDto));
     } catch (ResourceNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
     }
@@ -55,7 +56,9 @@ public class ProductController {
   public ResponseEntity<ApiResponse> addProduct(@RequestBody ProductAddRequest product) {
     try {
       Product newProduct = productService.addProduct(product);
-      return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("Thêm sản phẩm thành công", newProduct));
+      ProductDto convertedProductDto = productService.convertToDto(newProduct);
+      return ResponseEntity.status(HttpStatus.CREATED)
+          .body(new ApiResponse("Thêm sản phẩm thành công", convertedProductDto));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(new ApiResponse("Lỗi thêm sản phẩm: " + e.getMessage(), null));
@@ -84,7 +87,7 @@ public class ProductController {
     }
   }
 
-  @GetMapping("/by/brand-and-name")
+  @GetMapping("/by-brand-and-name")
   public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brand, @RequestParam String name) {
     try {
       List<Product> products = productService.getProductsByBrandAndName(brand, name);
@@ -92,23 +95,25 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(new ApiResponse("Không tìm thấy sản phẩm với thương hiệu và tên đã cho", null));
       }
-      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", products));
+      List<ProductDto> conveProductDtos = productService.getConvertedProducts(products);
+      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", conveProductDtos));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(new ApiResponse("Lỗi lấy sản phẩm theo tên và thương hiệu: " + e.getMessage(), null));
     }
   }
 
-  @GetMapping("/by/category-and-brand")
-  public ResponseEntity<ApiResponse> getProductByCategoryAndBrand(@PathVariable String category,
-      @PathVariable String brand) {
+  @GetMapping("/by-category-and-brand")
+  public ResponseEntity<ApiResponse> getProductByCategoryAndBrand(@RequestParam String category,
+      @RequestParam String brand) {
     try {
       List<Product> products = productService.getProductsByCategoryAndBrand(category, brand);
       if (products.isEmpty()) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(new ApiResponse("Không tìm thấy sản phẩm với danh mục sản phẩm và thương hiệu đã cho", null));
       }
-      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", products));
+      List<ProductDto> conveProductDtos = productService.getConvertedProducts(products);
+      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", conveProductDtos));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(new ApiResponse("Lỗi lấy sản phẩm theo danh mục sản phẩm và thương hiệu: " + e.getMessage(), null));
@@ -123,14 +128,15 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(new ApiResponse("Không tìm thấy sản phẩm với tên đã cho", null));
       }
-      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", products));
+      List<ProductDto> conveProductDtos = productService.getConvertedProducts(products);
+      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", conveProductDtos));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(new ApiResponse("Lỗi lấy sản phẩm theo tên: " + e.getMessage(), null));
     }
   }
 
-  @GetMapping("/by/brand")
+  @GetMapping("/by-brand")
   public ResponseEntity<ApiResponse> findProductByBrand(@RequestParam String brand) {
     try {
       List<Product> products = productService.getProductsByBrand(brand);
@@ -138,7 +144,8 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(new ApiResponse("Không tìm thấy sản phẩm với thương hiệu đã cho", null));
       }
-      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", products));
+      List<ProductDto> convertedProductDtos = productService.getConvertedProducts(products);
+      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", convertedProductDtos));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(new ApiResponse("Lỗi lấy sản phẩm theo thương hiệu: " + e.getMessage(), null));
@@ -153,14 +160,15 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(new ApiResponse("Không tìm thấy sản phẩm với danh mục đã cho", null));
       }
-      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", products));
+      List<ProductDto> converteProductDtos = productService.getConvertedProducts(products);
+      return ResponseEntity.ok(new ApiResponse("Lấy sản phẩm thành công", converteProductDtos));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(new ApiResponse("Lỗi lấy sản phẩm theo danh mục: " + e.getMessage(), null));
     }
   }
 
-  @GetMapping("/product/count/by/brand-and-name")
+  @GetMapping("/product/count/by-brand-and-name")
   public ResponseEntity<ApiResponse> countProductsByBrandAndName(@RequestParam String brand,
       @RequestParam String name) {
     try {
