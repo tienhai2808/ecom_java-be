@@ -1,4 +1,4 @@
-package store.ecom.backend.repository.image;
+package store.ecom.backend.repository;
 
 import java.util.List;
 

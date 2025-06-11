@@ -16,7 +16,7 @@ import store.ecom.backend.dto.ImageDto;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Image;
 import store.ecom.backend.model.Product;
-import store.ecom.backend.repository.image.ImageRepository;
+import store.ecom.backend.repository.ImageRepository;
 import store.ecom.backend.service.product.ProductService;
 
 @Service

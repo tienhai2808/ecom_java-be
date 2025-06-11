@@ -1,4 +1,4 @@
-package store.ecom.backend.repository.category;
+package store.ecom.backend.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

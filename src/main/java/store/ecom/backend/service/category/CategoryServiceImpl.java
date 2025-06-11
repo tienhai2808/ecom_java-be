@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import store.ecom.backend.exceptions.AlreadyExistsException;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Category;
-import store.ecom.backend.repository.category.CategoryRepository;
+import store.ecom.backend.repository.CategoryRepository;
 
 @Service
 @RequiredArgsConstructor

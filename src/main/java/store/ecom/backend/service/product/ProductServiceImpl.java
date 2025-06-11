@@ -14,9 +14,9 @@ import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Category;
 import store.ecom.backend.model.Image;
 import store.ecom.backend.model.Product;
-import store.ecom.backend.repository.category.CategoryRepository;
-import store.ecom.backend.repository.image.ImageRepository;
-import store.ecom.backend.repository.product.ProductRepository;
+import store.ecom.backend.repository.CategoryRepository;
+import store.ecom.backend.repository.ImageRepository;
+import store.ecom.backend.repository.ProductRepository;
 import store.ecom.backend.request.product.ProductAddRequest;
 import store.ecom.backend.request.product.ProductUpdateRequest;
 
