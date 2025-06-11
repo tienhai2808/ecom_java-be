@@ -34,4 +34,11 @@ public class CartServiceImpl implements CartService {
     Cart cart = getCart(id);
     return cart.getTotalAmount();
   }
+
+  @Override
+  public Long initializeNewCart() {
+    Cart newCart = new Cart();
+    newCart.setTotalAmount(BigDecimal.ZERO);
+    return cartRepository.save(newCart).getId();
+  }
 }

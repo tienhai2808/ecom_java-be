@@ -2,6 +2,8 @@ package store.ecom.backend.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,10 +29,12 @@ public class CartItem {
   private BigDecimal unitPrice;
   private BigDecimal totalPrice;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "product_id")
   private Product product;
 
+  @JsonIgnore
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "cart_id")
   private Cart cart;
