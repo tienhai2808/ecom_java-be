@@ -1,12 +1,20 @@
 package store.ecom.backend.service.cart;
 
 import java.math.BigDecimal;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import store.ecom.backend.dto.CartDto;
+import store.ecom.backend.dto.CartItemDto;
+import store.ecom.backend.dto.CategoryDto;
+import store.ecom.backend.dto.ProductDto;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Cart;
+import store.ecom.backend.model.Product;
 import store.ecom.backend.repository.CartItemRepository;
 import store.ecom.backend.repository.CartRepository;
 
@@ -15,6 +23,7 @@ import store.ecom.backend.repository.CartRepository;
 public class CartServiceImpl implements CartService {
   private final CartRepository cartRepository;
   private final CartItemRepository cartItemRepository;
+  private final ModelMapper modelMapper;
 
   @Override
   public Cart getCart(Long id) {
@@ -40,5 +49,26 @@ public class CartServiceImpl implements CartService {
     Cart newCart = new Cart();
     newCart.setTotalAmount(BigDecimal.ZERO);
     return cartRepository.save(newCart).getId();
+  }
+
+  @Override
+  public CartDto convertToDto(Cart cart) {
+    CartDto cartDto = modelMapper.map(cart, CartDto.class);
+    Set<CartItemDto> itemDtos = cart.getItems().stream().map(item -> {
+      CartItemDto itemDto = modelMapper.map(item, CartItemDto.class);
+
+      Product product = item.getProduct();
+      if (product != null) {
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        CategoryDto categoryDto = modelMapper.map(product.getCategory(), CategoryDto.class);
+        productDto.setCategory(categoryDto);
+        itemDto.setProduct(productDto);
+      }
+
+      return itemDto;
+    }).collect(Collectors.toSet());
+
+    cartDto.setItems(itemDtos);
+    return cartDto;
   }
 }

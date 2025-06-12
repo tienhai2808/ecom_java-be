@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import store.ecom.backend.dto.CartDto;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Cart;
 import store.ecom.backend.response.ApiResponse;
@@ -26,7 +27,8 @@ public class CartController {
   public ResponseEntity<ApiResponse> getCart(@PathVariable Long id) {
     try {
       Cart cart = cartService.getCart(id);
-      return ResponseEntity.ok(new ApiResponse("Lấy giỏ hàng thành công", cart));
+      CartDto convertedCartDto = cartService.convertToDto(cart);
+      return ResponseEntity.ok(new ApiResponse("Lấy giỏ hàng thành công", convertedCartDto));
     } catch (ResourceNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
     }

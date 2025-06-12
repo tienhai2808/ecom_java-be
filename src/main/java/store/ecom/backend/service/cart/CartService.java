@@ -2,6 +2,7 @@ package store.ecom.backend.service.cart;
 
 import java.math.BigDecimal;
 
+import store.ecom.backend.dto.CartDto;
 import store.ecom.backend.model.Cart;
 
 public interface CartService {
@@ -12,4 +13,6 @@ public interface CartService {
   BigDecimal getTotalPrice(Long id);
 
   Long initializeNewCart();
+
+  CartDto convertToDto(Cart cart);
 }
