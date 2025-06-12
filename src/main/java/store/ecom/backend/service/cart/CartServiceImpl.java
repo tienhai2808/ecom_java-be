@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import store.ecom.backend.dto.CartDto;
@@ -30,6 +31,7 @@ public class CartServiceImpl implements CartService {
     return cartRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy giỏ hàng"));
   }
 
+  @Transactional
   @Override
   public void clearCart(Long id) {
     Cart cart = getCart(id);
@@ -49,6 +51,11 @@ public class CartServiceImpl implements CartService {
     Cart newCart = new Cart();
     newCart.setTotalAmount(BigDecimal.ZERO);
     return cartRepository.save(newCart).getId();
+  }
+
+  @Override
+  public Cart getCartByUserId(Long userId) {
+    return cartRepository.findByUserId(userId);
   }
 
   @Override

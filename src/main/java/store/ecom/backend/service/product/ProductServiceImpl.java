@@ -8,25 +8,20 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import store.ecom.backend.dto.CategoryDto;
-import store.ecom.backend.dto.ImageDto;
 import store.ecom.backend.dto.ProductDto;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Category;
-import store.ecom.backend.model.Image;
 import store.ecom.backend.model.Product;
 import store.ecom.backend.repository.CategoryRepository;
-import store.ecom.backend.repository.ImageRepository;
 import store.ecom.backend.repository.ProductRepository;
-import store.ecom.backend.request.product.ProductAddRequest;
-import store.ecom.backend.request.product.ProductUpdateRequest;
+import store.ecom.backend.request.ProductAddRequest;
+import store.ecom.backend.request.ProductUpdateRequest;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-
   private final ProductRepository productRepository;
   private final CategoryRepository categoryRepository;
-  private final ImageRepository imageRepository;
   private final ModelMapper modelMapper;
 
   @Override

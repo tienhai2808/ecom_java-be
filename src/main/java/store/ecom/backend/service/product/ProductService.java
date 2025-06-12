@@ -4,8 +4,8 @@ import java.util.List;
 
 import store.ecom.backend.dto.ProductDto;
 import store.ecom.backend.model.Product;
-import store.ecom.backend.request.product.ProductAddRequest;
-import store.ecom.backend.request.product.ProductUpdateRequest;
+import store.ecom.backend.request.ProductAddRequest;
+import store.ecom.backend.request.ProductUpdateRequest;
 
 public interface ProductService {
   Product addProduct(ProductAddRequest request);

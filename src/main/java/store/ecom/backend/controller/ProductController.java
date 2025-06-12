@@ -18,8 +18,8 @@ import lombok.RequiredArgsConstructor;
 import store.ecom.backend.dto.ProductDto;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Product;
-import store.ecom.backend.request.product.ProductAddRequest;
-import store.ecom.backend.request.product.ProductUpdateRequest;
+import store.ecom.backend.request.ProductAddRequest;
+import store.ecom.backend.request.ProductUpdateRequest;
 import store.ecom.backend.response.ApiResponse;
 import store.ecom.backend.service.product.ProductService;
 
