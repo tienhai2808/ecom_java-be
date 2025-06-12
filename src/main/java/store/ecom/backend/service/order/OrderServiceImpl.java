@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import store.ecom.backend.dto.OrderDto;
@@ -28,11 +29,12 @@ public class OrderServiceImpl implements OrderService {
   private final CartService cartService;
   private final ModelMapper modelMapper;
 
+  @Transactional
   @Override
   public Order placeOrder(Long userId) {
     Cart cart = cartService.getCartByUserId(userId);
+    Order newOrder = createOrder(cart);
 
-    Order newOrder = creatOrder(cart);
     List<OrderItem> orderItems = createOrderItems(newOrder, cart);
     newOrder.setItems(new HashSet<>(orderItems));
     newOrder.setTotalAmount(calculateTotalAmount(orderItems));
@@ -43,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     return savedOrder;
   }
 
-  private Order creatOrder(Cart cart) {
+  private Order createOrder(Cart cart) {
     Order order = new Order();
     order.setStatus(OrderStatus.PENDING);
     order.setDate(LocalDate.now());
@@ -56,6 +58,7 @@ public class OrderServiceImpl implements OrderService {
       Product product = item.getProduct();
       product.setInventory(product.getInventory() - item.getQuantity());
       productRepository.save(product);
+
       return new OrderItem(
           item.getQuantity(),
           item.getUnitPrice(),
@@ -81,7 +84,8 @@ public class OrderServiceImpl implements OrderService {
     return orders.stream().map(this::convertToDto).toList();
   }
 
-  private OrderDto convertToDto(Order order) {
+  @Override
+  public OrderDto convertToDto(Order order) {
     return modelMapper.map(order, OrderDto.class);
   }
 }

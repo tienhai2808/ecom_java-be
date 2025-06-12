@@ -2,7 +2,6 @@ package store.ecom.backend.model;
 
 import java.math.BigDecimal;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +27,7 @@ public class OrderItem {
 
   private BigDecimal price;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "order_id")
   private Order order;
 

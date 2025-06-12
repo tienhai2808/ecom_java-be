@@ -1,6 +1,7 @@
 package store.ecom.backend.service.cart;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ import store.ecom.backend.dto.ProductDto;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Cart;
 import store.ecom.backend.model.Product;
+import store.ecom.backend.model.User;
 import store.ecom.backend.repository.CartItemRepository;
 import store.ecom.backend.repository.CartRepository;
 
@@ -47,10 +49,12 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  public Long initializeNewCart() {
-    Cart newCart = new Cart();
-    newCart.setTotalAmount(BigDecimal.ZERO);
-    return cartRepository.save(newCart).getId();
+  public Cart initializeNewCart(User user) {
+    return Optional.ofNullable(getCartByUserId(user.getId())).orElseGet(() -> {
+      Cart cart = new Cart();
+      cart.setUser(user);
+      return cartRepository.save(cart);
+    });
   }
 
   @Override

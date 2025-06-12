@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
+import store.ecom.backend.model.Cart;
+import store.ecom.backend.model.User;
 import store.ecom.backend.response.ApiResponse;
 import store.ecom.backend.service.cart.CartItemService;
 import store.ecom.backend.service.cart.CartService;
+import store.ecom.backend.service.user.UserService;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,15 +25,14 @@ import store.ecom.backend.service.cart.CartService;
 public class CartItemController {
   private final CartItemService cartItemService;
   private final CartService cartService;
+  private final UserService userService;
 
   @PostMapping("/item/add")
-  public ResponseEntity<ApiResponse> addItemToCart(@RequestParam(required = false) Long cartId,
-      @RequestParam Long productId, @RequestParam int quantity) {
+  public ResponseEntity<ApiResponse> addItemToCart(@RequestParam Long productId, @RequestParam int quantity) {
     try {
-      if (cartId == null) {
-        cartId = cartService.initializeNewCart();
-      }
-      cartItemService.addItemToCart(cartId, productId, quantity);
+      User user = userService.getUserById(1L);
+      Cart cart = cartService.initializeNewCart(user);
+      cartItemService.addItemToCart(cart.getId(), productId, quantity);
       return ResponseEntity.ok(new ApiResponse("Thêm item vào giỏ hàng thành công", null));
     } catch (ResourceNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));

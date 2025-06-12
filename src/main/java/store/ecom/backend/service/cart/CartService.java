@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import store.ecom.backend.dto.CartDto;
 import store.ecom.backend.model.Cart;
+import store.ecom.backend.model.User;
 
 public interface CartService {
   Cart getCart(Long id);
@@ -12,7 +13,7 @@ public interface CartService {
 
   BigDecimal getTotalPrice(Long id);
 
-  Long initializeNewCart();
+  Cart initializeNewCart(User user);
 
   Cart getCartByUserId(Long userId);
 

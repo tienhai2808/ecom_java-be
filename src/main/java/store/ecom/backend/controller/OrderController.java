@@ -28,10 +28,11 @@ public class OrderController {
   public ResponseEntity<ApiResponse> createOrder(@RequestParam Long userId) {
     try {
       Order order = orderService.placeOrder(userId);
-      return ResponseEntity.ok(new ApiResponse("Tạo đơn hàng thành công", order));
+      OrderDto convertedOrderDto = orderService.convertToDto(order);
+      return ResponseEntity.ok(new ApiResponse("Tạo đơn hàng thành công", convertedOrderDto));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body(new ApiResponse("Không thể tạo đơn hàng: ", e.getMessage()));
+          .body(new ApiResponse("Không thể tạo đơn hàng: " + e.getMessage(), null));
     }
   }
 
