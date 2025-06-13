@@ -38,7 +38,7 @@ public class CartServiceImpl implements CartService {
   public void clearCart(Long id) {
     Cart cart = getCart(id);
     cartItemRepository.deleteAllByCartId(id);
-    cart.getItems().clear();
+    cart.clearCart();
     cartRepository.deleteById(id);
   }
 
