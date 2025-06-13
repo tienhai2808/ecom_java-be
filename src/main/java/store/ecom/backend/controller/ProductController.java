@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import store.ecom.backend.dto.ProductDto;
+import store.ecom.backend.exceptions.AlreadyExistsException;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Product;
 import store.ecom.backend.request.ProductAddRequest;
@@ -59,9 +60,9 @@ public class ProductController {
       ProductDto convertedProductDto = productService.convertToDto(newProduct);
       return ResponseEntity.status(HttpStatus.CREATED)
           .body(new ApiResponse("Thêm sản phẩm thành công", convertedProductDto));
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body(new ApiResponse("Lỗi thêm sản phẩm: " + e.getMessage(), null));
+    } catch (AlreadyExistsException e) {
+      return ResponseEntity.status(HttpStatus.CONFLICT)
+          .body(new ApiResponse(e.getMessage(), null));
     }
   }
 

@@ -1,4 +1,4 @@
-package store.ecom.backend.config;
+package store.ecom.backend.security.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

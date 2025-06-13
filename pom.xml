@@ -28,9 +28,35 @@
 	</scm>
 	<properties>
 		<java.version>24</java.version>
+		<modelmapper-spring.version>3.2.2</modelmapper-spring.version>
+		<jjwt-api.version>0.12.6</jjwt-api.version>
+		<jjwt-impl.version>0.12.6</jjwt-impl.version>
+		<jjwt-jackson.version>0.12.6</jjwt-jackson.version>
 	</properties>
 	<dependencies>
+	  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
 
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>${jjwt-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${jjwt-impl.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${jjwt-jackson.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -73,7 +99,7 @@
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
-			<version>3.2.2</version>
+			<version>${modelmapper-spring.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -105,5 +131,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

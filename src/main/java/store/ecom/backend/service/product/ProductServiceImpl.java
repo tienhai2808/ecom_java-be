@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import store.ecom.backend.dto.CategoryDto;
 import store.ecom.backend.dto.ProductDto;
+import store.ecom.backend.exceptions.AlreadyExistsException;
 import store.ecom.backend.exceptions.ResourceNotFoundException;
 import store.ecom.backend.model.Category;
 import store.ecom.backend.model.Product;
@@ -26,6 +27,9 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public Product addProduct(ProductAddRequest request) {
+    if (productExists(request.getName(), request.getBrand())) {
+      throw new AlreadyExistsException("Sản phẩm " + request.getName() + " - " + request.getBrand() + " đã tồn tại");
+    }
     Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
         .orElseGet(() -> {
           Category newCategory = new Category(request.getCategory().getName());
@@ -35,6 +39,10 @@ public class ProductServiceImpl implements ProductService {
     request.setCategory(category);
 
     return productRepository.save(createProduct(request, category));
+  }
+
+  private boolean productExists(String name, String brand) {
+    return productRepository.existsByNameAndBrand(name, brand);
   }
 
   private Product createProduct(ProductAddRequest request, Category category) {
