@@ -29,9 +29,9 @@
 	<properties>
 		<java.version>24</java.version>
 		<modelmapper-spring.version>3.2.2</modelmapper-spring.version>
-		<jjwt-api.version>0.12.6</jjwt-api.version>
-		<jjwt-impl.version>0.12.6</jjwt-impl.version>
-		<jjwt-jackson.version>0.12.6</jjwt-jackson.version>
+		<jjwt-api.version>0.11.5</jjwt-api.version>
+		<jjwt-impl.version>0.11.5</jjwt-impl.version>
+		<jjwt-jackson.version>0.11.5</jjwt-jackson.version>
 	</properties>
 	<dependencies>
 	  <dependency>

@@ -4,17 +4,22 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.SignatureAlgorithm;
 import store.ecom.backend.security.user.ShopUserDetails;
 
+@Component
 public class JwtUtils {
+  @Value("${auth.token.jwtSecret}")
   private String jwtSecret;
+
+  @Value("${auth.token.expirationInMils}")
   private int expirationTime;
 
   public String generaTokenForUser(Authentication authentication) {
@@ -32,11 +37,21 @@ public class JwtUtils {
   }
 
   public String getUsernameFromToken(String token) {
-    return Jwts.parser()
+    return Jwts.parserBuilder()
         .setSigningKey(key())
         .build()
         .parseClaimsJws(token)
         .getBody()
         .getSubject();
+  }
+
+  public boolean validateToken(String token) {
+    try {
+      Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token);
+      return true;
+    } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException
+        | IllegalArgumentException e) {
+      throw new JwtException(e.getMessage());
+    }
   }
 }

@@ -3,6 +3,9 @@ package store.ecom.backend.service.user;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import store.ecom.backend.request.UserUpdateRequest;
 public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final ModelMapper modelMapper;
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   public User getUserById(Long id) {
@@ -30,7 +34,7 @@ public class UserServiceImpl implements UserService {
     return Optional.of(req).filter(_ -> !userRepository.existsByEmail(req.getEmail())).map(_ -> {
       User newUser = new User();
       newUser.setEmail(req.getEmail());
-      newUser.setPassword(req.getPassword());
+      newUser.setPassword(passwordEncoder.encode(req.getPassword()));
       newUser.setFirstName(req.getFirstName());
       newUser.setLastName(req.getLastName());
       return userRepository.save(newUser);
@@ -56,5 +60,12 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto convertToDto(User user) {
     return modelMapper.map(user, UserDto.class);
+  }
+
+  @Override
+  public User getAuthenticatedUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String email = authentication.getName();
+    return userRepository.findByEmail(email);
   }
 }
